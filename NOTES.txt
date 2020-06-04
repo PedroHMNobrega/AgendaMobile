@@ -1,0 +1,5 @@
+Notes do Projeto:
+
+- Internacionalizacao para mudar o idioma do calendario para portugues;
+- Tipo DateTime e subtracao;
+- Conexao com database;
