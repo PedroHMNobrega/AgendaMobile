@@ -1,5 +1,3 @@
-import 'package:app_agenda/components/date_to_text.dart';
-import 'package:app_agenda/components/my_colors.dart';
 import 'package:app_agenda/database/app_database.dart';
 import 'package:app_agenda/models/task.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +5,10 @@ import 'package:flutter/material.dart';
 class AddGeneralTaskDialog extends StatelessWidget {
   final DateTime date;
   final String label;
+  final String textLabel;
   final TextEditingController taskController = TextEditingController();
 
-  AddGeneralTaskDialog(this.date, this.label);
+  AddGeneralTaskDialog(this.date, this.label, {this.textLabel = 'Digite a Tarefa'});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class AddGeneralTaskDialog extends StatelessWidget {
                 child: TextField(
                   controller: taskController,
                   decoration: InputDecoration(
-                    labelText: 'Digite a Tarefa',
+                    labelText: textLabel,
                     border: OutlineInputBorder(),
                   ),
                   style: TextStyle(

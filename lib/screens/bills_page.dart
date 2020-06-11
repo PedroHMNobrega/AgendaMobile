@@ -4,14 +4,14 @@ import 'package:app_agenda/database/app_database.dart';
 import 'package:app_agenda/models/task.dart';
 import 'package:flutter/material.dart';
 
-class GeneralTasksPage extends StatefulWidget {
-  
+class BillsPage extends StatefulWidget {
+
   @override
-  _GeneralTasksPageState createState() => _GeneralTasksPageState();
+  _BillsPageState createState() => _BillsPageState();
 }
 
-class _GeneralTasksPageState extends State<GeneralTasksPage> {
-  final DateTime currentDay = DateTime.parse('1999-01-01');
+class _BillsPageState extends State<BillsPage> {
+  final DateTime defaultTime = DateTime.parse('1998-'+ DateTime.now().month.toString().padLeft(2, '0') +'-01');
 
   void refreshTasks() {
     setState(() {});
@@ -27,7 +27,7 @@ class _GeneralTasksPageState extends State<GeneralTasksPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Tarefas Gerais',
+                'Contas',
                 style: TextStyle(
                   fontSize: 24,
                   color: MyColors().fontColor,
@@ -38,7 +38,7 @@ class _GeneralTasksPageState extends State<GeneralTasksPage> {
           ),
         ),
         FutureBuilder<List<Task>>(
-          future: listTask(currentDay),
+          future: listBills(defaultTime),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -49,7 +49,7 @@ class _GeneralTasksPageState extends State<GeneralTasksPage> {
               case ConnectionState.active:
                 break;
               case ConnectionState.done:
-                return RenderList(snapshot.data, refreshTasks);
+                return RenderList(snapshot.data, refreshTasks, emptyMessage: 'Nenhuma Conta',);
                 break;
             }
             return Text('Unknown error');

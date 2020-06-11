@@ -1,21 +1,23 @@
+import 'package:app_agenda/components/Dialogs/edit_task_dialog.dart';
 import 'package:app_agenda/components/Dialogs/remove_task_dialog.dart';
 import 'package:app_agenda/components/my_colors.dart';
 import 'package:app_agenda/database/app_database.dart';
 import 'package:flutter/material.dart';
 
-class taskCard extends StatefulWidget {
+class TaskCard extends StatefulWidget {
   final String name;
   final int id;
   Function changeState;
   bool status;
+  final DateTime taskDate;
 
-  taskCard(this.name, this.status, this.id, this.changeState);
+  TaskCard(this.name, this.status, this.id, this.changeState, {this.taskDate});
 
   @override
-  _taskCardState createState() => _taskCardState();
+  _TaskCardState createState() => _TaskCardState();
 }
 
-class _taskCardState extends State<taskCard> {
+class _TaskCardState extends State<TaskCard> {
   Color background;
 
   @override
@@ -29,7 +31,12 @@ class _taskCardState extends State<taskCard> {
       onDoubleTap: () {
         showDialog(
           context: context,
-          builder: (contextDialog) => RemoveTaskDialog(widget.name, widget.id),
+          builder: (contextDialog) {
+            if(widget.taskDate != null)
+              return EditTaskDialog(widget.name, widget.id, widget.taskDate, (widget.status) ? 1 : 0);
+            else
+              return RemoveTaskDialog(widget.name, widget.id);
+          },
         ).then((value) {
           widget.changeState();
         });

@@ -24,7 +24,12 @@ class RemoveTaskDialog extends StatelessWidget {
                 remove(id);
                 Navigator.pop(context);
               },
-              child: Text('Remover'),
+              child: Text(
+                'Remover',
+                style: TextStyle(
+                  color: Colors.red[800],
+                ),
+              ),
             )
           ],
         ),

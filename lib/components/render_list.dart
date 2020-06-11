@@ -6,7 +6,9 @@ import 'my_colors.dart';
 class RenderList extends StatefulWidget {
   final List<Task> taskList;
   final Function refresh;
-  RenderList(this.taskList, this.refresh);
+  final String emptyMessage;
+  final bool showEditDialog;
+  RenderList(this.taskList, this.refresh, {this.emptyMessage = 'Nenhuma Tarefa', this.showEditDialog = false});
 
   @override
   _RenderListState createState() => _RenderListState();
@@ -28,7 +30,7 @@ class _RenderListState extends State<RenderList> {
             ),
           ),
           Text(
-            'Nenhuma Tarefa',
+            widget.emptyMessage,
             style: TextStyle(
               fontSize: 30,
               color: MyColors().fontColor,
@@ -45,8 +47,10 @@ class _RenderListState extends State<RenderList> {
           itemBuilder: (context, idx) {
             final Task task = tasks[idx];
             bool status = task.status == 1 ? true : false;
-            return taskCard(
-                task.name, status, task.id, widget.refresh);
+            if(widget.showEditDialog)
+              return TaskCard(task.name, status, task.id, widget.refresh, taskDate: task.date);
+            else
+              return TaskCard(task.name, status, task.id, widget.refresh);
           },
         ),
       ),

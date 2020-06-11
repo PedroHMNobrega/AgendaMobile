@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'components/my_colors.dart';
-import 'screens/tasks_page.dart';
+import 'screens/main_page.dart';
 
 void main() {
-  runApp(appAgenda());
+  runApp(AppAgenda());
 }
 
-class appAgenda extends StatelessWidget {
+class AppAgenda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class appAgenda extends StatelessWidget {
           textTheme: ButtonTextTheme.primary,
         ),
       ),
-      home: TasksPage(),
+      home: MainPage(),
     );
   }
 }

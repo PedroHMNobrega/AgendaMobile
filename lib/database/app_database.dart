@@ -52,16 +52,22 @@ Future<int> remove(int id) async {
   return db.delete(_tableName, where: '$_id = ?', whereArgs: [id]);
 }
 
-Future<int> update(int id, int status) async {
+Future<int> update(int id, int status, {date = null}) async {
   final Database db = await getDatabase();
   Map<String, dynamic> taskMap = Map();
-  taskMap[_status] = status;
-  return db.update(_tableName, taskMap, where: '$_id = ?', whereArgs: [id]);
+  if(date != null) {
+    taskMap[_status] = status;
+    taskMap[_date] = dateToText(date, type: 1);
+    return db.update(_tableName, taskMap, where: '$_id = ?', whereArgs: [id]);
+  } else {
+    taskMap[_status] = status;
+    return db.update(_tableName, taskMap, where: '$_id = ?', whereArgs: [id]);
+  }
 }
 
 Future<List<Task>> listTask(DateTime date) async {
   final Database db = await getDatabase();
-  final String weekDay = convertToDay[date.weekday-1];
+  //final String weekDay = convertToDay[date.weekday-1];
   final List<Map<String, dynamic>> table = await db.query(_tableName , where: '$_date = ?', whereArgs: [dateToText(date, type: 1)]);
   //final List<Map<String, dynamic>> table = await db.query(_tableName, where: '$weekDay = 1');
   //final List<Map<String, dynamic>> table2 = await db.query(_tableName , where: '$_date = ? and $_seg = 0 and $_ter = 0 and $_qua = 0 and $_qui = 0 and $_sex = 0 and $_sab = 0 and $_dom = 0', whereArgs: [dateToText(date, type: 1)]);
@@ -87,5 +93,32 @@ Future<List<Task>> listTask(DateTime date) async {
   //  );
   //  tasks.add(task);
   //}
+  return tasks;
+}
+
+Future<List<Task>> listBills(DateTime date) async {
+  final Database db = await getDatabase();
+  final List<Map<String, dynamic>> table = await db.query(_tableName , where: "$_date LIKE '1998%'");
+  final List<Task> tasks = List();
+  for(Map<String, dynamic> row in table) {
+    int status = row[_status];
+    DateTime dateRow = DateTime.tryParse(row[_date]);
+
+    if(dateRow.month != date.month) {
+      update(row[_id], 0, date: date);
+      dateRow = date;
+      status = 0;
+    }
+
+    Task task = Task(
+      row[_id],
+      row[_name],
+      status,
+      dateRow,
+      Map(),
+    );
+    tasks.add(task);
+  }
+
   return tasks;
 }
